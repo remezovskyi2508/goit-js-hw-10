@@ -2,12 +2,15 @@ import flatpickr from 'flatpickr';
 // Додатковий імпорт стилів
 import 'flatpickr/dist/flatpickr.min.css';
 import { Ukrainian } from 'flatpickr/dist/l10n/uk.js';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 const btn = document.querySelector('button');
 btn.disabled = true;
 btn.style.cursor = 'not-allowed';
 
 let userSelectedDate = null;
+let countdownInterval = null;
 
 const options = {
   locale: Ukrainian,
@@ -19,24 +22,46 @@ const options = {
     userSelectedDate = selectedDates[0];
     const now = new Date();
     if (userSelectedDate < now) {
-      alert('Please choose a date in the future');
-      btn.disabled = true;
-      btn.style.cursor = 'not-allowed';
+      iziToast.error({
+        backgroundColor: 'red',
+        messageColor: 'white',
+        messageSize: '20px',
+        iconColor: 'black',
+        iconSize: [24, 24],
+        position: 'topRight',
+        theme: 'dark',
+        message: 'Please choose a date in the future',
+      });
+      setButtonState(false);
       return;
     }
-    btn.disabled = false;
-    btn.style.cursor = 'pointer';
+    setButtonState(true);
   },
 };
 
 flatpickr('#datetime-picker', options);
 
 btn.addEventListener('click', () => {
+  setButtonState(false); // стилі і стан кнопки start.
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+  }
+  countdownInterval = setInterval(updateTime, 1000);
+  document.querySelector('#datetime-picker').disabled = true;
+});
+
+function updateTime() {
   const differenceTime = timeDiff();
+  if (differenceTime <= 0) {
+    clearInterval(countdownInterval);
+    setTimeInterface({ days: '00', hours: '00', minutes: '00', seconds: '00' });
+    resetState();
+    return;
+  }
   const calculateTimeValue = convertTime(differenceTime);
   const addZero = addLeadingZero(calculateTimeValue);
   setTimeInterface(addZero);
-});
+}
 
 function timeDiff() {
   const now = new Date();
@@ -76,4 +101,14 @@ function setTimeInterface(date) {
   document.querySelector('[data-hours]').textContent = date.hours;
   document.querySelector('[data-minutes]').textContent = date.minutes;
   document.querySelector('[data-seconds]').textContent = date.seconds;
+}
+
+function setButtonState(isEnabled) {
+  btn.disabled = !isEnabled;
+  btn.style.cursor = isEnabled ? 'pointer' : 'not-allowed';
+}
+
+function resetState() {
+  setButtonState(false); // Кнопка неактивна
+  document.querySelector('#datetime-picker').disabled = false; // Інпут активний
 }
