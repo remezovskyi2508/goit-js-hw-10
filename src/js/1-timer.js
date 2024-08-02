@@ -22,16 +22,7 @@ const options = {
     userSelectedDate = selectedDates[0];
     const now = new Date();
     if (userSelectedDate < now) {
-      iziToast.error({
-        backgroundColor: 'red',
-        messageColor: 'white',
-        messageSize: '20px',
-        iconColor: 'black',
-        iconSize: [24, 24],
-        position: 'topRight',
-        theme: 'dark',
-        message: 'Please choose a date in the future',
-      });
+      iziToast.show(optionToast);
       setButtonState(false);
       return;
     }
@@ -112,3 +103,15 @@ function resetState() {
   setButtonState(false); // Кнопка неактивна
   document.querySelector('#datetime-picker').disabled = false; // Інпут активний
 }
+
+const optionToast = {
+  backgroundColor: 'red',
+  iconUrl: '../img/cancel-circle.svg#cancel-circle',
+  iconColor: 'white',
+  imageWidth: '25px',
+  messageColor: 'white',
+  messageSize: '35px',
+  position: 'topRight',
+  theme: 'light',
+  message: 'Please choose a date in the future',
+};
