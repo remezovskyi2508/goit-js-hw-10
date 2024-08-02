@@ -1,0 +1,2 @@
+import"./assets/modulepreload-polyfill-3cfb730f.js";const n=document.querySelector("form");n.addEventListener("submit",e=>{e.preventDefault()});const s=({delay:e,radio:o})=>new Promise((r,t)=>{setTimeout(()=>{o==="fulfilled"?r(`✅ Fulfilled promise in ${e}ms`):t(`❌ Rejected promise in ${e}ms`)},e)});s({delay:2e3,radio:"Rejected"}).then(e=>{console.log(e)}).catch(e=>{console.error(e)});
+//# sourceMappingURL=commonHelpers2.js.map
