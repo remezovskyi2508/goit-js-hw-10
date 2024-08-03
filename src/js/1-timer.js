@@ -12,6 +12,18 @@ btn.style.cursor = 'not-allowed';
 let userSelectedDate = null;
 let countdownInterval = null;
 
+const optionToast = {
+  backgroundColor: 'red',
+  iconUrl: '../img/cancel-circle.svg#cancel-circle',
+  iconColor: 'white',
+  imageWidth: '25px',
+  messageColor: 'white',
+  messageSize: '35px',
+  position: 'topRight',
+  theme: 'light',
+  message: 'Please choose a date in the future',
+};
+
 const options = {
   locale: Ukrainian,
   enableTime: true,
@@ -103,15 +115,3 @@ function resetState() {
   setButtonState(false); // Кнопка неактивна
   document.querySelector('#datetime-picker').disabled = false; // Інпут активний
 }
-
-const optionToast = {
-  backgroundColor: 'red',
-  iconUrl: '../img/cancel-circle.svg#cancel-circle',
-  iconColor: 'white',
-  imageWidth: '25px',
-  messageColor: 'white',
-  messageSize: '35px',
-  position: 'topRight',
-  theme: 'light',
-  message: 'Please choose a date in the future',
-};
